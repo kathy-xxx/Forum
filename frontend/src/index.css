@@ -1,0 +1,70 @@
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.text-primary {
+  color: #2c3e50 !important; /* Muted dark blue for text */
+}
+
+.table-primary {
+  background-color: #e8eff5 !important; /* Soft, muted blue */
+  color: #2c3e50 !important; /* Complementary dark text */
+}
+
+.navbar {
+  background-color: #34495e !important; /* Sophisticated dark blue */
+  color: #ecf0f1 !important; /* Light text for contrast */
+}
+
+.card {
+  border-color: #d5dae2; /* Subtle border color for cards */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for elegance */
+}
+
+body {
+  background-color: #f8f9fa; /* Soft gray for the page background */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-dialog {
+  background: #fff;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content {
+  border: none;
+  padding: 1rem;
+}
