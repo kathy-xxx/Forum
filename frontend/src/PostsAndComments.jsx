@@ -100,6 +100,53 @@ function PostsAndComments() {
       .catch((err) => console.error("Error creating comment:", err));
   };
 
+  // Handle deleting a post
+  const handleDeletePost = (postId) => {
+    if (!user) {
+      alert("You must be logged in to delete a post.");
+      return;
+    }
+
+    if (!window.confirm("Are you sure you want to delete this post?")) {
+      return;
+    }
+
+    axios
+      .delete(`http://localhost:8081/posts/${postId}`)
+      .then(() => {
+        alert("Post deleted successfully!");
+        setPosts((prevPosts) =>
+          prevPosts.filter((post) => post.post_id !== postId)
+        );
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.post_id !== postId)
+        );
+      })
+      .catch((err) => console.error("Error deleting post:", err));
+  };
+
+  // Handle deleting a comment
+  const handleDeleteComment = (commentId) => {
+    if (!user) {
+      alert("You must be logged in to delete a comment.");
+      return;
+    }
+
+    if (!window.confirm("Are you sure you want to delete this comment?")) {
+      return;
+    }
+
+    axios
+      .delete(`http://localhost:8081/comments/${commentId}`)
+      .then(() => {
+        alert("Comment deleted successfully!");
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.comment_id !== commentId)
+        );
+      })
+      .catch((err) => console.error("Error deleting comment:", err));
+  };
+
   // Check if the current user is following another user
   const checkFollowStatus = (userId) => {
     if (!user) return;
@@ -229,6 +276,15 @@ function PostsAndComments() {
                 </button>
               </>
             )}
+            {/* Add Delete button if the logged-in user is the author of the post */}
+            {user && user.user_id === post.post_user_id && (
+              <button
+                className="btn btn-sm btn-outline-danger ms-2"
+                onClick={() => handleDeletePost(post.post_id)}
+              >
+                Delete
+              </button>
+            )}
           </div>
           <p>{post.post_content}</p>
           <p className="text-muted">
@@ -269,6 +325,15 @@ function PostsAndComments() {
                         Message
                       </button>
                     </>
+                  )}
+                  {/* Add Delete button if the logged-in user is the author of the comment */}
+                  {user && user.user_id === comment.comment_user_id && (
+                    <button
+                      className="btn btn-sm btn-outline-danger ms-2"
+                      onClick={() => handleDeleteComment(comment.comment_id)}
+                    >
+                      Delete
+                    </button>
                   )}
                 </p>
                 <p>{comment.comment_content}</p>

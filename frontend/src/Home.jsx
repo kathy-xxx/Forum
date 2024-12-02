@@ -65,6 +65,22 @@ function Home() {
             .catch(err => console.error('Error creating community:', err));
     };    
 
+    if (!user) {
+        // Display a beautiful CTA if the user is not logged in
+        return (
+            <div className="d-flex vh-100 bg-gradient justify-content-center align-items-center">
+                <div className="text-center">
+                    <h1 className="text-primary mb-4">Welcome to ForumApp</h1>
+                    <p className="text-muted mb-4">
+                        Join the conversation! Explore communities, connect with others, and share your ideas.
+                    </p>
+                    <Link to="/login" className="btn btn-primary btn-lg me-2">Log In</Link>
+                    <Link to="/signup" className="btn btn-outline-primary btn-lg">Sign Up</Link>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="d-flex vh-100 bg-gradient justify-content-center align-items-center">
             <div className="card p-4 w-75">
@@ -83,7 +99,6 @@ function Home() {
                 <table className="table table-hover">
                     <thead className="bg-light text-secondary">
                         <tr>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Description</th>
                             {user && <th>Action</th>}
@@ -92,7 +107,6 @@ function Home() {
                     <tbody>
                         {communities.map((community, index) => (
                             <tr key={index}>
-                                <td className="text-secondary">{community.community_id}</td>
                                 <td className="fw-bold text-primary">{community.name}</td>
                                 <td className="text-muted">{community.description}</td>
                                 {user && (

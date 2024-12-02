@@ -53,8 +53,19 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
-          ForumApp
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <span
+            className="me-2"
+            style={{ fontSize: "1.5rem", fontWeight: "bold" }}
+          >
+            ForumApp
+          </span>
+          <span
+            className="text-muted"
+            style={{ fontSize: "0.9rem", fontStyle: "italic" }}
+          >
+            by XiaoZZhangYSongX
+          </span>
         </Link>
         <button
           className="navbar-toggler"
