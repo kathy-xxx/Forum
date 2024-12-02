@@ -31,7 +31,7 @@ function PostsAndComments() {
         userIds.forEach(checkFollowStatus);
       })
       .catch((err) => console.error("Error fetching posts and comments:", err));
-  }, [id, posts, comments]);
+  }, [id, user, posts, comments]);
 
   // Handle creating a new post
   const handleCreatePost = () => {
@@ -152,7 +152,7 @@ function PostsAndComments() {
 
   // Check if the current user is following another user
   const checkFollowStatus = (userId) => {
-    if (!user) return;
+    if (!user || userId === user.user_id) return;
 
     axios
       .get(`http://localhost:8081/user/${user.user_id}/followees`)
@@ -258,7 +258,7 @@ function PostsAndComments() {
         <div key={post.post_id} className="card p-3 mb-3">
           <div className="d-flex align-items-center mb-2">
             <h5 className="text-secondary me-3">{post.post_username}</h5>
-            {user && user.user_id !== post.post_user_id && (
+            {user && (user.user_id !== post.post_user_id) && (
               <>
                 <button
                   className={`btn btn-sm me-2 ${
@@ -279,8 +279,7 @@ function PostsAndComments() {
                 </button>
               </>
             )}
-            {/* Add Delete button if the logged-in user is the author of the post */}
-            {user && user.user_id === post.post_user_id && (
+            {user && (user.user_id === post.post_user_id) && (
               <button
                 className="btn btn-sm btn-outline-danger ms-2"
                 onClick={() => handleDeletePost(post.post_id)}
@@ -302,7 +301,7 @@ function PostsAndComments() {
               <div key={comment.comment_id} className="ms-3">
                 <p className="mb-1 d-flex align-items-center">
                   <strong className="me-2">{comment.comment_username}</strong>
-                  {user && user.user_id !== comment.comment_user_id && (
+                  {user && (user.user_id !== comment.comment_user_id) && (
                     <>
                       <button
                         className={`btn btn-sm me-2 ${
@@ -329,7 +328,7 @@ function PostsAndComments() {
                       </button>
                     </>
                   )}
-                  {user && user.user_id === comment.comment_user_id && (
+                  {user && (user.user_id === comment.comment_user_id) && (
                     <button
                       className="btn btn-sm btn-outline-danger ms-2"
                       onClick={() => handleDeleteComment(comment.comment_id)}

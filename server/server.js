@@ -61,19 +61,18 @@ app.get("/user/:id", (req, res) => {
 // Update user profile details
 app.put("/user/:id", (req, res) => {
   const userId = req.params.id;
-  const { username, email, phone, bio } = req.body;
+  const { username, phone, bio } = req.body;
 
   const sql = `
         UPDATE User 
-        SET username = ?, email = ?, phone = ?, bio = ?
+        SET username = ?, phone = ?, bio = ?
         WHERE user_id = ?`;
 
-  db.query(sql, [username, email, phone, bio, userId], (err, result) => {
+  db.query(sql, [username, phone, bio, userId], (err, result) => {
     if (err) return res.status(500).json({ message: "Server Error" });
     return res.status(200).json({
       user_id: userId,
       username,
-      email,
       phone,
       bio,
       join_date: new Date().toISOString(), // For simplicity, not updating join_date
