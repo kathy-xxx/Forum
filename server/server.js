@@ -350,36 +350,10 @@ app.post("/post/:id/comments", (req, res) => {
 app.delete("/comments/:id", (req, res) => {
   const commentId = req.params.id;
 
-  // Fetch the user_id for the comment to decrement their comment count
-  const getCommentSql = "SELECT user_id FROM Comment WHERE comment_id = ?";
-  db.query(getCommentSql, [commentId], (err, result) => {
-    if (err)
-      return res.status(500).json({ error: "Error fetching comment details." });
-    if (result.length === 0)
-      return res.status(404).json({ message: "Comment not found." });
-
-    const userId = result[0].user_id;
-
-    // Delete the comment
-    const deleteCommentSql = "DELETE FROM Comment WHERE comment_id = ?";
-    db.query(deleteCommentSql, [commentId], (err, result) => {
-      if (err)
-        return res.status(500).json({ error: "Error deleting comment." });
-
-      // Decrement the comment count for the user
-      const updateUserActivitySql = `
-          UPDATE UserActivity 
-          SET comment_count = comment_count - 1 
-          WHERE user_id = ? AND comment_count > 0
-        `;
-      db.query(updateUserActivitySql, [userId], (err) => {
-        if (err)
-          return res
-            .status(500)
-            .json({ error: "Error updating user activity." });
-        res.json({ message: "Comment deleted successfully." });
-      });
-    });
+  // Delete the comment
+  const deleteCommentSql = "DELETE FROM Comment WHERE comment_id = ?";
+  db.query(deleteCommentSql, [commentId], (err, result) => {
+    if (err) return res.status(500).json({ error: "Error deleting comment." });
   });
 });
 

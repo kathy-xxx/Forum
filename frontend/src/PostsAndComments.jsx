@@ -31,7 +31,7 @@ function PostsAndComments() {
         userIds.forEach(checkFollowStatus);
       })
       .catch((err) => console.error("Error fetching posts and comments:", err));
-  }, [id]);
+  }, [id, posts, comments]);
 
   // Handle creating a new post
   const handleCreatePost = () => {
@@ -100,6 +100,16 @@ function PostsAndComments() {
       .catch((err) => console.error("Error creating comment:", err));
   };
 
+  const fetchPostsAndComments = () => {
+    axios
+      .get(`http://localhost:8081/thread/${id}/posts`)
+      .then((res) => {
+        setPosts(res.data.posts);
+        setComments(res.data.comments);
+      })
+      .catch((err) => console.error("Error fetching posts and comments:", err));
+  };
+
   // Handle deleting a post
   const handleDeletePost = (postId) => {
     if (!user) {
@@ -115,12 +125,7 @@ function PostsAndComments() {
       .delete(`http://localhost:8081/posts/${postId}`)
       .then(() => {
         alert("Post deleted successfully!");
-        setPosts((prevPosts) =>
-          prevPosts.filter((post) => post.post_id !== postId)
-        );
-        setComments((prevComments) =>
-          prevComments.filter((comment) => comment.post_id !== postId)
-        );
+        fetchPostsAndComments();
       })
       .catch((err) => console.error("Error deleting post:", err));
   };
@@ -140,9 +145,7 @@ function PostsAndComments() {
       .delete(`http://localhost:8081/comments/${commentId}`)
       .then(() => {
         alert("Comment deleted successfully!");
-        setComments((prevComments) =>
-          prevComments.filter((comment) => comment.comment_id !== commentId)
-        );
+        fetchPostsAndComments();
       })
       .catch((err) => console.error("Error deleting comment:", err));
   };
@@ -326,7 +329,6 @@ function PostsAndComments() {
                       </button>
                     </>
                   )}
-                  {/* Add Delete button if the logged-in user is the author of the comment */}
                   {user && user.user_id === comment.comment_user_id && (
                     <button
                       className="btn btn-sm btn-outline-danger ms-2"
